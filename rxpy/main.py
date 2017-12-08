@@ -3,7 +3,7 @@ import cv2
 import tkinter as tk
 from PIL import Image, ImageTk
 from rx import Observable
-from frame_observable import observable_frames_cv2
+from frame_observable import CameraFeed
 from image_show_observer import show_frames
 from rx.concurrency import ThreadPoolScheduler
 
@@ -23,11 +23,11 @@ def setup_gui():
 def main():
     window, lmain = setup_gui()
     scheduler = ThreadPoolScheduler(1)
-    frames = Observable.create(observable_frames_cv2)
-    #frames.observe_on(scheduler)
-    show_frames(frames, lmain, window)
+    observer = Observable.from_(CameraFeed())
+    observer.subscribe_on(scheduler)
+    show_frames(observer, lmain, window)
     window.mainloop()
-    print("ok")
+    
 
 if __name__ == "__main__":
     main()
