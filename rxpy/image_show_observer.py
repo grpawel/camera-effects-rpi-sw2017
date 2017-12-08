@@ -1,9 +1,12 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 from rx import Observer
+from rx.concurrency import TkinterScheduler
 
 
-def show_frames(observable, lmain):
+def show_frames(observable, lmain, root):
+    scheduler = TkinterScheduler(root)
+
     class ShowingObserver(Observer):
         def on_next(self, value):
             img = Image.fromarray(value)
@@ -18,4 +21,6 @@ def show_frames(observable, lmain):
         def on_error(self, error):
             raise Exception("")
 
-    observable.subscribe(ShowingObserver())
+    observable \
+        .subscribe_on(scheduler) \
+        .subscribe(ShowingObserver())

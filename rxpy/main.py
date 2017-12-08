@@ -22,7 +22,7 @@ def setup_gui():
 def main():
     window, lmain = setup_gui()
     frames = Observable.create(observable_frames_cv2)
-    show_frames(frames, lmain)
+    show_frames(frames, lmain, window)
     window.mainloop()
 
 if __name__ == "__main__":
