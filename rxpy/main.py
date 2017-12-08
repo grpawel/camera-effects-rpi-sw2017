@@ -3,8 +3,8 @@ import cv2
 import tkinter as tk
 from PIL import Image, ImageTk
 from rx import Observable
-from .frame_observable import observable_frames_cv2
-from .image_show_observer import show_frames
+from frame_observable import observable_frames_cv2
+from image_show_observer import show_frames
 
 
 def setup_gui():
@@ -24,3 +24,6 @@ def main():
     frames = Observable.create(observable_frames_cv2)
     show_frames(frames, lmain)
     window.mainloop()
+
+if __name__ == "__main__":
+    main()
