@@ -23,9 +23,9 @@ def setup_gui():
 def main():
     window, lmain = setup_gui()
     scheduler = ThreadPoolScheduler(1)
-    observer = Observable.from_(CameraFeed())
-    observer.subscribe_on(scheduler)
-    show_frames(observer, lmain, window)
+    observable = Observable.from_(CameraFeed())
+    observable = observable.subscribe_on(scheduler)
+    show_frames(observable, lmain, window)
     window.mainloop()
     
 
