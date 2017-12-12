@@ -1,4 +1,4 @@
-from engine.object_tracking.tracker import ObjectTracker
+from tracker import ObjectTracker
 def track():
     import cv2
     import numpy as np
