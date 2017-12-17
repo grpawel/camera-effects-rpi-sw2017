@@ -1,9 +1,10 @@
 from collections import deque
 import cv2
 import imutils as imutils
+from engine.engine_main import BaseTarget
 
 
-class ObjectTracker:
+class ObjectTracker(BaseTarget):
     def __init__(self, down,up):
         self.TRACES = 10
         self.object_colour_rgb_bound_down = down
@@ -12,7 +13,7 @@ class ObjectTracker:
         self.trace_start = 0
 
 
-    def track(self, img):
+    def process(self, img):
         frame = imutils.resize(img,width = 300)
         cv2.GaussianBlur(frame, (11, 11), 0)
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)

@@ -34,8 +34,9 @@ class ImageDisplayer(threading.Thread):
                 key = cv2.waitKey(1) & 0xFF
 
 class ImageProcessor(threading.Thread):
-    def __init__(self):
+    def __init__(self, target):
         threading.Thread.__init__(self)
+        self.target = target
 
     def run(self):
         global input_frames_queue
@@ -43,14 +44,23 @@ class ImageProcessor(threading.Thread):
         while True:
             if not input_frames_queue.empty():
                 f = input_frames_queue.get()
+                processed = self.target.process(f)
                 input_frames_queue.task_done()
-                out_put_frames_queue.put(f)
+                out_put_frames_queue.put(processed)
 
+class BaseTarget(object):
+    def process(self, img):
+        raise NotImplementedError("Please Implement this method")
 
 if __name__ == '__main__':
+    import numpy as np
+    from engine.object_tracking.tracker import ObjectTracker
+
+    down,up = (np.array([30, 150, 50]), np.array([255, 255, 255]))
+    target = ObjectTracker(down,up)
     grabber = ImageGrabber()
     displayer = ImageDisplayer()
-    processer = ImageProcessor()
+    processer = ImageProcessor(target)
     grabber.start()
     displayer.start()
     processer.start()

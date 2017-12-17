@@ -10,7 +10,7 @@ def track():
 
     while True:
         _, img = cap.read()
-        frame = ob_trcker.track(img)
+        frame = ob_trcker.process(img)
         cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
 if __name__ == '__main__':
