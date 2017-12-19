@@ -1,6 +1,6 @@
 import time
 from image_processors import ImagePipeline, ImageProcessor
-from .finger.fingers.finger_processor import finger_processor
+from finger.fingers.finger_processor import finger_processor
 
 def main():
     pipeline = ImagePipeline()
