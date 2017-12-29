@@ -54,13 +54,13 @@ class BaseTarget(object):
 
 if __name__ == '__main__':
     import numpy as np
-    from engine.object_tracking.tracker import ObjectTracker
+    from engine.edges.edge_detector import EdgeDetector
 
-    down,up = (np.array([30, 150, 50]), np.array([255, 255, 255]))
-    target = ObjectTracker(down,up)
-    grabber = ImageGrabber()
-    displayer = ImageDisplayer()
-    processer = ImageProcessor(target)
-    grabber.start()
-    displayer.start()
-    processer.start()
+
+    target = EdgeDetector()
+    cam = cv2.VideoCapture(0)
+    while True:
+        _, img = cam.read()
+        p = target.process(img)
+        cv2.imshow('frame', p)
+        key = cv2.waitKey(1) & 0xFF
