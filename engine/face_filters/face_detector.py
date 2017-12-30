@@ -14,10 +14,83 @@ red = (0, 0, 255)
 yellow = (0, 255, 255)
 orange = (0,140,255)
 
+class FaceDetector():
+    def __init__(self,faces=True, eyes=False, smiles=False, mouths=False, noses=False):
+        self.find_face = faces
+        self.find_eye = eyes
+        self.find_smiles = smiles
+        self.find_mouths = mouths
+        self.find_noses = noses
+        self.face_live = 5
+        self.eye_live = 5
+        self.smile_live = 5
+        self.nose_live = 5
+        self.mouth_live = 5
+        self.faces = []
+        self.eyes = []
+        self.noses = []
+        self.smiles = []
+        self.mouths = []
+        self.cnt = 0
+    def procces_img(self, img):
+        self.cnt += 1
+        if min(self.eye_live, self.face_live, self.mouth_live, self.nose_live, self.smile_live) < 0:
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            gray = cv2.resize(gray, None, fx=resize_scale, fy=resize_scale, interpolation=cv2.INTER_AREA)
+        if self.find_face:
+            if self.face_live < 0:
+                faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+                if len(faces) > 0:
+                    self.face_live = 4
+                    self.faces = faces
+            for face in self.faces:
+                img = draw_rectange_on_face(img, face)
+            self.face_live-=1
+
+        if self.find_eye:
+            if self.eye_live < 0:
+                eyes = eyes_cascade.detectMultiScale(gray, 1.3, 5)
+                if len(eyes)>0:
+                    self.eyes = eyes
+                    self.eye_live = 5
+            for eye in self.eyes:
+                img = draw_rectange_on_eye(img,eye)
+            self.eye_live -= 1
+
+        if self.find_smiles:
+            if self.smile_live < 0:
+                smiles = smile_cascade.detectMultiScale(gray, 1.3, 5)
+                if len(smiles) > 0:
+                    self.smiles = smiles
+                    self.smile_live = 4
+            for smile in self.smiles:
+                img = draw_rectange_on_smile(img, smile)
+            self.smile_live-=1
+
+        if self.find_mouths:
+            if self.mouth_live <0:
+                mouths = mouth_cascade.detectMultiScale(gray, 1.7, 11)
+                if len(mouths) >0:
+                    self.mouths = mouths
+                    self.mouth_live = 6
+            for mouth in self.mouths:
+                img = draw_rectange_on_mouth(img, mouth)
+            self.mouth_live -= 1
+
+        if self.find_noses:
+            if self.nose_live < 0:
+                noses = nose_cascade.detectMultiScale(gray, 1.3, 5)
+                if len(noses) > 0:
+                    self.noses = noses
+                    self.nose_live=5
+            for nose in self.noses:
+                img = draw_rectange_on_nose(img, nose)
+            self.nose_live-=1
+
+        return img
 
 def low_to_high_resize(x, y):
     return (int(x // resize_scale), int(y // resize_scale))
-
 
 def draw_rectange_on_face(img, face):
     ((x, y), (width, height)) = low_to_high_resize(face[0], face[1]), low_to_high_resize(face[2], face[3])
@@ -49,27 +122,3 @@ def draw_rectange_on_nose(img, nose):
     return img
 
 
-def face_detector(img, faces=True, eyes=False, smiles=False, mouths=False, noses=False):
-    scale = 1.3
-    min_neighbours = 5
-
-    # convert to gray scale
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    gray = cv2.resize(gray, None, fx=resize_scale, fy=resize_scale, interpolation=cv2.INTER_AREA)
-
-    if faces:
-        for face in face_cascade.detectMultiScale(gray, scale, min_neighbours):
-            img = draw_rectange_on_face(img, face)
-    if eyes:
-        for eye in eyes_cascade.detectMultiScale(gray, scale, min_neighbours):
-            img = draw_rectange_on_eye(img, eye)
-    if smiles:
-        for smile in smile_cascade.detectMultiScale(gray, scale, min_neighbours):
-            img = draw_rectange_on_smile(img, smile)
-    if mouths:
-        for mouth in mouth_cascade.detectMultiScale(gray, 1.7, 11):
-            img = draw_rectange_on_mouth(img, mouth)
-    if noses:
-        for nose in nose_cascade.detectMultiScale(gray, scale, min_neighbours):
-            img = draw_rectange_on_nose(img, nose)
-    return img
