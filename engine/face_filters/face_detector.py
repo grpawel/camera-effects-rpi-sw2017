@@ -40,7 +40,7 @@ class FaceDetector():
         if self.find_face:
             if self.face_live < 0:
                 faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-                if len(faces) > 0:
+                if len(faces) > 0 or self.face_live < -20:
                     self.face_live = 4
                     self.faces = faces
             for face in self.faces:
@@ -50,7 +50,7 @@ class FaceDetector():
         if self.find_eye:
             if self.eye_live < 0:
                 eyes = eyes_cascade.detectMultiScale(gray, 1.3, 5)
-                if len(eyes)>0:
+                if len(eyes)>0 or self.eye_live < -20:
                     self.eyes = eyes
                     self.eye_live = 5
             for eye in self.eyes:
@@ -60,7 +60,7 @@ class FaceDetector():
         if self.find_smiles:
             if self.smile_live < 0:
                 smiles = smile_cascade.detectMultiScale(gray, 1.3, 5)
-                if len(smiles) > 0:
+                if len(smiles) > 0 or self.smile_live < -20:
                     self.smiles = smiles
                     self.smile_live = 4
             for smile in self.smiles:
@@ -70,7 +70,7 @@ class FaceDetector():
         if self.find_mouths:
             if self.mouth_live <0:
                 mouths = mouth_cascade.detectMultiScale(gray, 2, 20)
-                if len(mouths) >0:
+                if len(mouths) >0  or self.mouth_live < -20:
                     self.mouths = mouths
                     self.mouth_live = 6
             for mouth in self.mouths:
@@ -80,7 +80,7 @@ class FaceDetector():
         if self.find_noses:
             if self.nose_live < 0:
                 noses = nose_cascade.detectMultiScale(gray, 1.3, 5)
-                if len(noses) > 0:
+                if len(noses) > 0 or self.nose_live < -20:
                     self.noses = noses
                     self.nose_live=5
             for nose in self.noses:
