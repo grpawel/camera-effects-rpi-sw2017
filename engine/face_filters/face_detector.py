@@ -69,7 +69,7 @@ class FaceDetector():
 
         if self.find_mouths:
             if self.mouth_live <0:
-                mouths = mouth_cascade.detectMultiScale(gray, 1.7, 11)
+                mouths = mouth_cascade.detectMultiScale(gray, 2, 20)
                 if len(mouths) >0:
                     self.mouths = mouths
                     self.mouth_live = 6
@@ -101,24 +101,28 @@ def draw_rectange_on_face(img, face):
 def draw_rectange_on_eye(img, eye):
     ((x, y), (width, height)) = low_to_high_resize(eye[0], eye[1]), low_to_high_resize(eye[2], eye[3])
     img = cv2.rectangle(img, (x, y), (x + width, y + height), green, 5)
+    cv2.putText(img, 'oko', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1,green, thickness=2)
     return img
 
 
 def draw_rectange_on_smile(img, smile):
     ((x, y), (width, height)) = low_to_high_resize(smile[0], smile[1]), low_to_high_resize(smile[2], smile[3])
     img = cv2.rectangle(img, (x, y), (x + width, y + height), red, 5)
+    cv2.putText(img, 'uśmiech', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 4, red)
     return img
 
 
 def draw_rectange_on_mouth(img, mouth):
     ((x, y), (width, height)) = low_to_high_resize(mouth[0], mouth[1]), low_to_high_resize(mouth[2], mouth[3])
     img = cv2.rectangle(img, (x, y), (x + width, y + height), yellow, 2)
+    cv2.putText(img, 'usta', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, yellow, thickness=2)
     return img
 
 
 def draw_rectange_on_nose(img, nose):
     ((x, y), (width, height)) = low_to_high_resize(nose[0], nose[1]), low_to_high_resize(nose[2], nose[3])
     img = cv2.rectangle(img, (x, y), (x + width, y + height), orange, 3)
+    cv2.putText(img, 'nos', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, orange, thickness=2)
     return img
 
 
