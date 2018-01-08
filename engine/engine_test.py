@@ -20,6 +20,6 @@ while i>0:
     _,frame = vs.read()
     if GPIO.input(gpio_pin):
         i += 1
-    im = funs[i%f]
+    im = funs[i%f](frame)
     cv2.imshow("Frame", im)
     key = cv2.waitKey(1) & 0xFF
