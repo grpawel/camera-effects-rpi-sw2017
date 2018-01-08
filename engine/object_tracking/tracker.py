@@ -6,6 +6,7 @@ import imutils as imutils
 class ObjectTracker:
     def __init__(self, down,up):
         self.TRACES = 10
+        print(down,up)
         self.object_colour_rgb_bound_down = down
         self.object_colour_rgb_bound_up = up
         self.centres = [None for i in range(0, self.TRACES)]
@@ -13,7 +14,7 @@ class ObjectTracker:
 
 
     def track(self, img):
-        frame = imutils.resize(img,width = 300)
+        frame = imutils.resize(img,width = 600)
         cv2.GaussianBlur(frame, (11, 11), 0)
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         mask = self.build_mask(hsv)
