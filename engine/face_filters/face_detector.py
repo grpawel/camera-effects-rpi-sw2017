@@ -88,6 +88,16 @@ class FaceDetector():
             self.nose_live-=1
 
         return img
+    def find_nose_list(self, img):
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        gray = cv2.resize(gray, None, fx=resize_scale, fy=resize_scale, interpolation=cv2.INTER_AREA)
+        noses = nose_cascade.detectMultiScale(gray, 1.3, 5)
+        return list(map(lambda x: self.get_noses_center(x), noses))
+
+    def get_noses_center(self, nose):
+        print(nose)
+        x,y,w,h = tuple(map(lambda x: int(x//resize_scale), nose))
+        return int(x + w//2), int(y +h//2)
 
 def low_to_high_resize(x, y):
     return (int(x // resize_scale), int(y // resize_scale))
