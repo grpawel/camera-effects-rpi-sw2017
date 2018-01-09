@@ -2,24 +2,41 @@ import cv2
 import RPi.GPIO as GPIO
 import time
 
-from engine.face_filters.face_detector import FaceDetector
-from engine.face_filters.face_addons import FaceFilters
-from engine.edges.edge_processor import edge_processor
-from engine.finger.fingers.finger_processor import finger_processor
-gpio_pin = 14
+from face_filters.face_detector import FaceDetector
+from face_filters.face_addons import FaceFilters
+from edges.edge_processor import edge_processor
+from finger.fingers.finger_processor import finger_processor
+gpio_pin = 15
 vs = cv2.VideoCapture(0)
-fd = FaceDetector(True, True, False, True, True)
+fd = FaceDetector(True, True, False, False, False)
 fa = FaceFilters()
-funs = [lambda x: edge_processor(x), lambda x: fd.procces_img(x), lambda x: finger_processor(x), lambda x: fa.draw_moustache(x)]
+funs = [edge_processor, fd.procces_img, fa.draw_moustache]
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 f = len(funs)
-i=1
-while i>0:
-    _,frame = vs.read()
-    if GPIO.input(gpio_pin):
+i=0
+fun = funs[0]
+last_change = time.time()
+def change_func(_):
+    global i
+    global last_change
+    global fun
+    global funs
+    current_time = time.time()
+    if current_time - last_change >= 0.5:
         i += 1
-    im = funs[i%f](frame)
+        fun = funs[i%f]
+        last_change = current_time
+def exit_func(_):
+    exit()
+    
+GPIO.add_event_detect(gpio_pin, GPIO.FALLING, callback=change_func)
+GPIO.add_event_detect(18, GPIO.FALLING, callback=exit_func)
+while True:
+    _,frame = vs.read()
+    print(i)
+    im = fun(frame)
     cv2.imshow("Frame", im)
     key = cv2.waitKey(1) & 0xFF

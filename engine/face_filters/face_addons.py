@@ -1,4 +1,4 @@
-from engine.face_filters.face_detector import FaceDetector
+from face_filters.face_detector import FaceDetector
 import cv2
 blue = (255, 0, 0)
 green = (0, 255, 0)

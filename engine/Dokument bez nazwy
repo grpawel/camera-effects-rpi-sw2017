@@ -1,0 +1,7 @@
+source ~/.profile
+
+workon cv
+
+python3 engine_test.py
+
+
