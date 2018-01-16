@@ -24,17 +24,19 @@ f = len(funs)
 i=0
 fun = funs[0]
 last_change = time.time()
+fun_changed = False
 def change_func(_):
     global i
     global last_change
     global fun
     global funs
+    global fun_changed
     current_time = time.time()
     if current_time - last_change >= 0.5:
         i += 1
         fun = funs[i%f]
         last_change = current_time
-        cv2.destroyAllWindows()
+        fun_changed = True
 def exit_func(_):
     exit()
     
@@ -42,7 +44,10 @@ GPIO.add_event_detect(gpio_pin, GPIO.FALLING, callback=change_func)
 GPIO.add_event_detect(18, GPIO.FALLING, callback=exit_func)
 while True:
     _,frame = vs.read()
-    print(i)
     name, im = fun(frame)
     cv2.imshow(name, im)
     key = cv2.waitKey(1) & 0xFF
+    if fun_changed:
+        cv2.destroyAllWindows()
+        fun_changed = False
+
