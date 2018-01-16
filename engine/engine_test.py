@@ -13,7 +13,7 @@ vs = cv2.VideoCapture(0)
 fd = FaceDetector(True, True, False, False, False)
 fa = FaceFilters()
 ob = ObjectTracker(np.array([30, 150, 50]), np.array([255, 255, 255]))
-funs = [edge_processor, fd.procces_img, fa.draw_moustache, fa.draw_hat, ob.process]
+funs = [edge_processor, fd.procces_img, fa.draw_moustache, fa.draw_hat, ob.process,finger_processor]
 
 
 GPIO.setmode(GPIO.BCM)

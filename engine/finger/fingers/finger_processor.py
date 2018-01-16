@@ -47,3 +47,4 @@ def finger_processor(img):
 
     # define actions required
     print(count_defects)
+    return 'finger', img
