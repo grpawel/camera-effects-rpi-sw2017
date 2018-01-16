@@ -14,7 +14,7 @@ class ObjectTracker():
 
 
     def process(self, img):
-        frame = imutils.resize(img,width = 600)
+        frame = imutils.resize(img,width = 300)
         cv2.GaussianBlur(frame, (11, 11), 0)
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         mask = self.build_mask(hsv)

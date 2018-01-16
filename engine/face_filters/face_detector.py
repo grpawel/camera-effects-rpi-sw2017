@@ -6,7 +6,7 @@ eyes_cascade = cv2.CascadeClassifier('./res/haarcascades/haarcascade_eye.xml')
 smile_cascade = cv2.CascadeClassifier('./res/haarcascades/haarcascade_smile.xml')
 mouth_cascade = cv2.CascadeClassifier('./res/haarcascades/Mouth.xml')
 nose_cascade = cv2.CascadeClassifier('./res/haarcascades/haarcascade_mcs_nose.xml')
-resize_scale = 0.3
+resize_scale = 0.5
 
 blue = (255, 0, 0)
 green = (0, 255, 0)
