@@ -1,10 +1,10 @@
 from collections import deque
 import cv2
 import imutils as imutils
-from engine.engine_main import BaseTarget
 
 
-class ObjectTracker(BaseTarget):
+
+class ObjectTracker():
     def __init__(self, down,up):
         self.TRACES = 10
         self.object_colour_rgb_bound_down = down
@@ -14,7 +14,7 @@ class ObjectTracker(BaseTarget):
 
 
     def process(self, img):
-        frame = imutils.resize(img,width = 300)
+        frame = imutils.resize(img,width = 600)
         cv2.GaussianBlur(frame, (11, 11), 0)
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         mask = self.build_mask(hsv)
@@ -36,7 +36,7 @@ class ObjectTracker(BaseTarget):
                 for trace in reversed(traces):
                     trace_size = int(0.98*trace_size)
                     cv2.circle(frame,trace, trace_size, (0, 0, 255), -1)
-        return frame
+        return 'Tracker', frame
 
     def build_mask(self, hsv):
         mask = cv2.inRange(hsv, self.object_colour_rgb_bound_down, self.object_colour_rgb_bound_up)

@@ -33,7 +33,7 @@ class FaceFilters:
             self.draw_effect(img,nose[3],nose[0], nose[1]+20)
 
         self.nose_live-=1
-        return img
+        return 'moustache', img
 
     def draw_hat(self, img):
         if self.head_Live < 0:
@@ -52,7 +52,7 @@ class FaceFilters:
                        (0, 255, 255), 2)
             self.draw_effect(img,head[3],head[0]+int(int(head[3].shape[1]//5)), head[1]-int(head[3].shape[0]//1.5))
         self.head_Live-=1
-        return img
+        return 'hat', img
 
     def draw_effect(self, frame, effect, x_center, y_center):
         (h, w) = (effect.shape[0], effect.shape[1])

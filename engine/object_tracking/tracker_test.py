@@ -1,4 +1,4 @@
-from tracker import ObjectTracker
+from engine.object_tracking.tracker import ObjectTracker
 def track():
     import cv2
     import numpy as np
@@ -10,8 +10,8 @@ def track():
 
     while True:
         _, img = cap.read()
-        frame = ob_trcker.process(img)
-        cv2.imshow("Frame", frame)
+        name, frame = ob_trcker.process(img)
+        cv2.imshow(name, frame)
         key = cv2.waitKey(1) & 0xFF
 if __name__ == '__main__':
     track()

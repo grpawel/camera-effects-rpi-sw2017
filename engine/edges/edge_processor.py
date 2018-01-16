@@ -7,4 +7,4 @@ def edge_processor(img):
     v = np.median(b)
     lower = int(max(0, (0.66) * v))
     upper = int(min(255, (1.33) * v))
-    return cv2.Canny(b, lower, upper)
+    return 'edge', cv2.Canny(b, lower, upper)

@@ -88,7 +88,7 @@ class FaceDetector():
                 img = draw_rectange_on_nose(img, nose)
             self.nose_live-=1
 
-        return img
+        return 'face detect', img
 
     def find_nose_list(self, img):
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
