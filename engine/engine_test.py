@@ -7,14 +7,15 @@ from face_filters.face_addons import FaceFilters
 from edges.edge_processor import edge_processor
 from finger.fingers.finger_processor import finger_processor
 from object_tracking.tracker import ObjectTracker
+from basic.inverter import Inverter
 import numpy as np
 gpio_pin = 15
 vs = cv2.VideoCapture(0)
 fd = FaceDetector(True, True, False, False, False)
 fa = FaceFilters()
 ob = ObjectTracker(np.array([30, 150, 50]), np.array([255, 255, 255]))
-funs = [edge_processor, fd.procces_img, fa.draw_moustache, fa.draw_hat, ob.process,finger_processor]
-
+inv = Inverter()
+funs = [edge_processor, fd.procces_img, fa.draw_moustache, fa.draw_hat, ob.invert, finger_processor, inv.invert]
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
