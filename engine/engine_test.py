@@ -10,7 +10,7 @@ gpio_pin = 15
 vs = cv2.VideoCapture(0)
 fd = FaceDetector(True, True, False, False, False)
 fa = FaceFilters()
-funs = [edge_processor, fd.procces_img, fa.draw_moustache]
+funs = [edge_processor, fd.procces_img, fa.draw_moustache, fa.draw_hat]
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)

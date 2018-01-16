@@ -22,6 +22,7 @@ class FaceDetector():
         self.find_mouths = mouths
         self.find_noses = noses
         self.face_live = 5
+        self.nose_live = 5
         self.eye_live = 5
         self.smile_live = 5
         self.g = 5
@@ -88,16 +89,26 @@ class FaceDetector():
             self.nose_live-=1
 
         return img
+
     def find_nose_list(self, img):
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         gray = cv2.resize(gray, None, fx=resize_scale, fy=resize_scale, interpolation=cv2.INTER_AREA)
         noses = nose_cascade.detectMultiScale(gray, 1.3, 5)
         return list(map(lambda x: self.get_noses_center(x), noses))
 
+    def find_head_list(self, img):
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        gray = cv2.resize(gray, None, fx=resize_scale, fy=resize_scale, interpolation=cv2.INTER_AREA)
+        faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+        return list(map(lambda x: self.get_top_head_center(x), faces))
+
     def get_noses_center(self, nose):
-        print(nose)
         x,y,w,h = tuple(map(lambda x: int(x//resize_scale), nose))
         return [int(x + w//2), int(y +h//2), int (w), None]
+    def get_top_head_center(self, head):
+        x,y,w,h  = tuple(map(lambda x: int(x//resize_scale), head))
+        return [int(x+w//2), int(y), int(w), None]
+
 def low_to_high_resize(x, y):
     return (int(x // resize_scale), int(y // resize_scale))
 
