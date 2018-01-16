@@ -15,7 +15,7 @@ yellow = (0, 255, 255)
 orange = (0,140,255)
 
 class FaceDetector():
-    def __init__(self,faces=True, eyes=False, smiles=False, mouths=False, noses=False):
+    def     __init__(self,faces=True, eyes=False, smiles=False, mouths=False, noses=False):
         self.find_face = faces
         self.find_eye = eyes
         self.find_smiles = smiles
@@ -24,7 +24,7 @@ class FaceDetector():
         self.face_live = 5
         self.eye_live = 5
         self.smile_live = 5
-        self.nose_live = 5
+        self.g = 5
         self.mouth_live = 5
         self.faces = []
         self.eyes = []
@@ -79,7 +79,7 @@ class FaceDetector():
 
         if self.find_noses:
             if self.nose_live < 0:
-                noses = nose_cascade.detectMultiScale(gray, 1.3, 5)
+                noses = nose_cascade.detectMultiScale(gray, 1.3, 21)
                 if len(noses) > 0 or self.nose_live < -20:
                     self.noses = noses
                     self.nose_live=5
@@ -97,8 +97,7 @@ class FaceDetector():
     def get_noses_center(self, nose):
         print(nose)
         x,y,w,h = tuple(map(lambda x: int(x//resize_scale), nose))
-        return int(x + w//2), int(y +h//2)
-
+        return [int(x + w//2), int(y +h//2), int (w), None]
 def low_to_high_resize(x, y):
     return (int(x // resize_scale), int(y // resize_scale))
 
