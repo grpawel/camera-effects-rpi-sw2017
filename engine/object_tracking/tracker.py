@@ -5,7 +5,7 @@ import numpy as np
 
 
 class ObjectTracker():
-    def __init__(self, down,up):
+    def __init__(self):
         self.TRACES = 10
         self.colours = [
     ('red',np.array([30, 150, 50]), np.array([255, 255, 255])),
