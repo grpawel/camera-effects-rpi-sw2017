@@ -60,7 +60,7 @@ class ObjectTracker():
 
         return 'Tracker', img
     def next(self):
-        self.colour_index = self.colour_index + 1 % len(self.colours)
+        self.colour_index = (self.colour_index + 1) % len(self.colours)
         color = self.colours[self.colour_index]
         print('tracking color {}'.format(color[0]))
         self.object_colour_rgb_bound_up = color[2]
