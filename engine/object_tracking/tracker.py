@@ -56,7 +56,6 @@ class ObjectTracker():
                 self.trace_start = (self.trace_start + 1) % self.TRACES
 
                 self.trace_live = 5
-            return 'Tracker', mask
 
         return 'Tracker', img
     def next(self):
