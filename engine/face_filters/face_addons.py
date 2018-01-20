@@ -58,9 +58,10 @@ class FaceFilters:
         (h, w) = (effect.shape[0], effect.shape[1])
         (imgH, imgW) = (frame.shape[0], frame.shape[1])
         if y_center < 0:
-            return frame
-        x_offset = x_center - w//2
-        y_offset = y_center
+            y_offset = 0
+        else:
+            x_offset = x_center - w//2
+            y_offset = y_center
 
         if y_offset + h >= imgH:
             effect = effect[0:imgH - y_offset, :, :]
