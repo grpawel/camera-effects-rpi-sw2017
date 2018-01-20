@@ -52,6 +52,8 @@ class ObjectTracker():
                 self.trace_live = 5
 
         return 'Tracker', img
+    def next(self):
+        print('change color to track')
 
     def build_mask(self, hsv):
         mask = cv2.inRange(hsv, self.object_colour_rgb_bound_down, self.object_colour_rgb_bound_up)

@@ -16,6 +16,7 @@ orange = (0,140,255)
 
 class FaceDetector():
     def     __init__(self,faces=True, eyes=False, smiles=False, mouths=False, noses=False):
+        self.conf = 7
         self.find_face = faces
         self.find_eye = eyes
         self.find_smiles = smiles
@@ -90,6 +91,34 @@ class FaceDetector():
 
         return 'face detect', img
 
+    def next(self):
+        self.conf = ( self.conf + 1 ) % 16
+        bit_mask = "{0:b}".format(self.conf).zfill(4)
+
+        info = 'Recoginzing: '
+        if bit_mask[0] == '1':
+            info += 'face\n '
+            self.find_face = True
+        else:
+            self.find_face = False
+        if bit_mask[1] == '1':
+            info += 'eye\n '
+            self.find_eye = True
+        else:
+            self.find_eye = False
+
+        if bit_mask[2] == '1':
+            info += 'mouth\n '
+            self.find_mouths = True
+        else:
+            self.find_mouths = False
+        if bit_mask[2] == '1':
+            info += 'noses\n '
+            self.find_noses = True
+        else:
+            self.find_noses = False
+
+        print(info)
     def find_nose_list(self, img):
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         gray = cv2.resize(gray, None, fx=resize_scale, fy=resize_scale, interpolation=cv2.INTER_AREA)
