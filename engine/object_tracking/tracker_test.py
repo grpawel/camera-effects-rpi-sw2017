@@ -5,7 +5,7 @@ def track():
     red =(np.array([30, 150, 50]), np.array([255, 255, 255]))
     blue = (np.array([46, 31, 240]), np.array([255, 255, 255]))
     green = (np.array([106, 11, 240]), np.array([255, 255, 255]))
-    down,up = green
+    down,up = red
     ob_trcker = ObjectTracker(down, up)
     cap = cv2.VideoCapture(0)
 
