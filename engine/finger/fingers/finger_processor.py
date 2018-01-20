@@ -13,13 +13,9 @@ def finger_processor(img):
     _, thresh1 = cv2.threshold(blurred, 127, 255,
                                cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
-    image, contours, hierarchy = cv2.findContours(thresh1.copy(), \
-                                                  cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    image, contours, hierarchy = cv2.findContours(thresh1.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
 
     cnt = max(contours, key=lambda x: cv2.contourArea(x))
-    hull = cv2.convexHull(cnt)
-
-    drawing = np.zeros(crop_img.shape, np.uint8)
     hull = cv2.convexHull(cnt, returnPoints=False)
 
     defects = cv2.convexityDefects(cnt, hull)
@@ -45,6 +41,5 @@ def finger_processor(img):
         cv2.line(crop_img, start, end, [0, 255, 0], 2)
         cv2.circle(crop_img,far,5,[0,0,255],-1)
 
-    # define actions required
     cv2.putText(img, str(count_defects), (25, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), thickness=2)
     return 'finger', img
