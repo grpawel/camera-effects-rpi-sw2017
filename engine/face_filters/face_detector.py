@@ -112,7 +112,7 @@ class FaceDetector():
             self.find_mouths = True
         else:
             self.find_mouths = False
-        if bit_mask[2] == '1':
+        if bit_mask[3] == '1':
             info += 'noses\n '
             self.find_noses = True
         else:

@@ -1,14 +1,19 @@
 from collections import deque
 import cv2
 import imutils as imutils
-
+import numpy as np
 
 
 class ObjectTracker():
     def __init__(self, down,up):
         self.TRACES = 10
-        self.object_colour_rgb_bound_down = down
-        self.object_colour_rgb_bound_up = up
+        self.colours = [
+    ('red',np.array([30, 150, 50]), np.array([255, 255, 255])),
+    ('blue',np.array([46, 31, 240]), np.array([255, 255, 255]))
+]
+        self.colour_index = 1
+        self.object_colour_rgb_bound_down = None
+        self.object_colour_rgb_bound_up = None
         self.centres = [None for i in range(0, self.TRACES)]
         self.trace_start = 0
         self.trace_live = 0
@@ -16,6 +21,7 @@ class ObjectTracker():
         self.y = None
         self.radius = None
         self.resize_scale = 0.3
+        self.next()
 
 
     def process(self, img):
@@ -50,10 +56,16 @@ class ObjectTracker():
                 self.trace_start = (self.trace_start + 1) % self.TRACES
 
                 self.trace_live = 5
+            return 'Tracker', mask
 
         return 'Tracker', img
     def next(self):
-        print('change color to track')
+        self.colour_index = self.colour_index + 1 % len(self.colours)
+        color = self.colours[self.colour_index]
+        print('tracking color {}'.format(color[0]))
+        self.object_colour_rgb_bound_up = color[2]
+        self.object_colour_rgb_bound_down = color[1]
+
 
     def build_mask(self, hsv):
         mask = cv2.inRange(hsv, self.object_colour_rgb_bound_down, self.object_colour_rgb_bound_up)
