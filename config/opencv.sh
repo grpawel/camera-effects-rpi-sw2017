@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 PYTHON_VERSION='3.5'
-OPEN_CV_VERSION='3.3.0'
+OPEN_CV_VERSION='3.3.1'
+
 sudo apt-get purge wolfram-engine
+sudo apt-get purge libreoffice*
+sudo apt-get clean
+sudo apt-get autoremove
 sudo apt-get update && sudo apt-get upgrade
 sudo apt-get install build-essential cmake pkg-config
 sudo apt-get install libjpeg-dev libtiff5-dev libjasper-dev libpng12-dev
@@ -22,8 +26,6 @@ mkvirtualenv cv -p python3
 source ~/.profile
 workon cv
 
-
-
 cd ~
 wget -O opencv.zip https://github.com/Itseez/opencv/archive/$OPEN_CV_VERSION.zip
 unzip opencv.zip
@@ -43,7 +45,6 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 make -j4
 sudo make install
 sudo ldconfig
-cd /usr/local/lib/python$PYTHON_VERSION/site-packages/
-sudo mv cv2.cpython-35m-arm-linux-gnueabihf.so cv2.so
-
-
+sudo mv /usr/local/lib/python$PYTHON_VERSION/site-packages/cv2.cpython-35m-arm-linux-gnueabihf.so /usr/local/lib/python$PYTHON_VERSION/site-packages/cv2.so
+ln -s /usr/local/lib/python$PYTHON_VERSION/site-packages/cv2.so /usr/local/lib/python$PYTHON_VERSION/site-packages/cv2.so
+sudo reboot
