@@ -19,7 +19,7 @@ inv = Inverter()
 nr = NoiseRemover()
 # list of image processing function, and change param func
 funs = [(edge_processor, None), (fd.procces_img, fd.next), (fa.draw_moustache, None), (fa.draw_hat, None),
-        (ob.process, ob.next), (finger_processor, None), (inv.invert, None), (nr.remove_noise, None)]
+        (ob.process, ob.next), (finger_processor, None), (inv.invert, None), (nr.remove_noise, nr.next)]
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
