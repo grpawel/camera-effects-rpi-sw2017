@@ -60,6 +60,7 @@ class FaceFilters:
         (h, w) = (effect.shape[0], effect.shape[1])
         (imgH, imgW) = (frame.shape[0], frame.shape[1])
         if y_center < 0:
+            x_offset = x_center - w // 2
             y_offset = 0
         else:
             x_offset = x_center - w // 2
