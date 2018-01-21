@@ -1,6 +1,7 @@
 import threading
-import cv2
 from queue import Queue
+
+import cv2
 
 
 class ImageGrabber(threading.Thread):

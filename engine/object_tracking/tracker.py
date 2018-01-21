@@ -1,6 +1,4 @@
-from collections import deque
 import cv2
-import imutils as imutils
 import numpy as np
 
 

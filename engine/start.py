@@ -1,15 +1,14 @@
-import cv2
-import RPi.GPIO as GPIO
 import time
 
-from face_filters.face_detector import FaceDetector
-from face_filters.face_addons import FaceFilters
-from edges.edge_processor import edge_processor
-from finger.fingers.finger_processor import finger_processor
-from object_tracking.tracker import ObjectTracker
+import RPi.GPIO as GPIO
+import cv2
 from basic.invert import Inverter
 from basic.remove_noise import NoiseRemover
-import numpy as np
+from edges.edge_processor import edge_processor
+from face_filters.face_addons import FaceFilters
+from face_filters.face_detector import FaceDetector
+from finger.fingers.finger_processor import finger_processor
+from object_tracking.tracker import ObjectTracker
 
 gpio_pin = 15
 vs = cv2.VideoCapture(0)
