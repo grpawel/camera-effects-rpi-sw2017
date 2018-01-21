@@ -39,7 +39,7 @@ def finger_processor(img):
             cv2.circle(crop_img, far, 1, [0, 0, 255], -1)
 
         cv2.line(crop_img, start, end, [0, 255, 0], 2)
-        cv2.circle(crop_img,far,5,[0,0,255],-1)
+        cv2.circle(crop_img, far, 5, [0, 0, 255], -1)
 
     cv2.putText(img, str(count_defects), (25, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), thickness=2)
     return 'finger', img

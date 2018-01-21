@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 
+
 def edge_processor(img):
     gr = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     b = cv2.GaussianBlur(gr, (3, 3), 0)

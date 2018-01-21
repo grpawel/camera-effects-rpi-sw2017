@@ -8,9 +8,9 @@ class ObjectTracker():
     def __init__(self):
         self.TRACES = 10
         self.colours = [
-    ('red',np.array([30, 150, 50]), np.array([255, 255, 255])),
-    ('blue',np.array([46, 31, 240]), np.array([255, 255, 255]))
-]
+            ('red', np.array([30, 150, 50]), np.array([255, 255, 255])),
+            ('blue', np.array([46, 31, 240]), np.array([255, 255, 255]))
+        ]
         self.colour_index = 1
         self.object_colour_rgb_bound_down = None
         self.object_colour_rgb_bound_up = None
@@ -23,11 +23,9 @@ class ObjectTracker():
         self.resize_scale = 0.3
         self.next()
 
-
     def process(self, img):
-
-        working_frame = cv2.resize(img,None,fx=self.resize_scale, fy=self.resize_scale)
-        if self.trace_live < 0 :
+        working_frame = cv2.resize(img, None, fx=self.resize_scale, fy=self.resize_scale)
+        if self.trace_live < 0:
             cv2.GaussianBlur(working_frame, (11, 11), 0)
             hsv = cv2.cvtColor(working_frame, cv2.COLOR_BGR2HSV)
             mask = self.build_mask(hsv)
@@ -50,7 +48,7 @@ class ObjectTracker():
         if self.trace_live > -20:
 
             cv2.circle(img, (int(self.x), int(self.y)), int(self.radius),
-                   (0, 255, 255), 2)
+                       (0, 255, 255), 2)
             cv2.circle(img, self.center, 5, (0, 0, 255), -1)
             trace_size = 10
             traces = self.centres[-(self.TRACES - self.trace_start):] + self.centres[:self.trace_start]
@@ -60,6 +58,7 @@ class ObjectTracker():
         self.trace_live -= 1
 
         return 'Tracker', img
+
     def next(self):
         self.colour_index = (self.colour_index + 1) % len(self.colours)
         color = self.colours[self.colour_index]
@@ -67,11 +66,8 @@ class ObjectTracker():
         self.object_colour_rgb_bound_up = color[2]
         self.object_colour_rgb_bound_down = color[1]
 
-
     def build_mask(self, hsv):
         mask = cv2.inRange(hsv, self.object_colour_rgb_bound_down, self.object_colour_rgb_bound_up)
         mask = cv2.erode(mask, None, iterations=2)
         mask = cv2.dilate(mask, None, iterations=2)
         return mask
-
-

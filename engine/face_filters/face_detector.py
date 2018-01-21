@@ -12,10 +12,11 @@ blue = (255, 0, 0)
 green = (0, 255, 0)
 red = (0, 0, 255)
 yellow = (0, 255, 255)
-orange = (0,140,255)
+orange = (0, 140, 255)
+
 
 class FaceDetector():
-    def     __init__(self,faces=True, eyes=False, smiles=False, mouths=False, noses=False):
+    def __init__(self, faces=True, eyes=False, smiles=False, mouths=False, noses=False):
         self.conf = 7
         self.find_face = faces
         self.find_eye = eyes
@@ -34,6 +35,7 @@ class FaceDetector():
         self.smiles = []
         self.mouths = []
         self.cnt = 0
+
     def procces_img(self, img):
         self.cnt += 1
         if min(self.eye_live, self.face_live, self.mouth_live, self.nose_live, self.smile_live) < 0:
@@ -47,16 +49,16 @@ class FaceDetector():
                     self.faces = faces
             for face in self.faces:
                 img = draw_rectange_on_face(img, face)
-            self.face_live-=1
+            self.face_live -= 1
 
         if self.find_eye:
             if self.eye_live < 0:
                 eyes = eyes_cascade.detectMultiScale(gray, 1.3, 5)
-                if len(eyes)>0 or self.eye_live < -20:
+                if len(eyes) > 0 or self.eye_live < -20:
                     self.eyes = eyes
                     self.eye_live = 5
             for eye in self.eyes:
-                img = draw_rectange_on_eye(img,eye)
+                img = draw_rectange_on_eye(img, eye)
             self.eye_live -= 1
 
         if self.find_smiles:
@@ -67,12 +69,12 @@ class FaceDetector():
                     self.smile_live = 4
             for smile in self.smiles:
                 img = draw_rectange_on_smile(img, smile)
-            self.smile_live-=1
+            self.smile_live -= 1
 
         if self.find_mouths:
-            if self.mouth_live <0:
+            if self.mouth_live < 0:
                 mouths = mouth_cascade.detectMultiScale(gray, 2, 20)
-                if len(mouths) >0  or self.mouth_live < -20:
+                if len(mouths) > 0 or self.mouth_live < -20:
                     self.mouths = mouths
                     self.mouth_live = 6
             for mouth in self.mouths:
@@ -84,15 +86,15 @@ class FaceDetector():
                 noses = nose_cascade.detectMultiScale(gray, 1.3, 21)
                 if len(noses) > 0 or self.nose_live < -20:
                     self.noses = noses
-                    self.nose_live=5
+                    self.nose_live = 5
             for nose in self.noses:
                 img = draw_rectange_on_nose(img, nose)
-            self.nose_live-=1
+            self.nose_live -= 1
 
         return 'face detect', img
 
     def next(self):
-        self.conf = ( self.conf + 1 ) % 16
+        self.conf = (self.conf + 1) % 16
         bit_mask = "{0:b}".format(self.conf).zfill(4)
 
         info = 'Recoginzing: '
@@ -119,6 +121,7 @@ class FaceDetector():
             self.find_noses = False
 
         print(info)
+
     def find_nose_list(self, img):
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         gray = cv2.resize(gray, None, fx=resize_scale, fy=resize_scale, interpolation=cv2.INTER_AREA)
@@ -132,14 +135,17 @@ class FaceDetector():
         return list(map(lambda x: self.get_top_head_center(x), faces))
 
     def get_noses_center(self, nose):
-        x,y,w,h = tuple(map(lambda x: int(x//resize_scale), nose))
-        return [int(x + w//2), int(y +h//2), int (w), None]
+        x, y, w, h = tuple(map(lambda x: int(x // resize_scale), nose))
+        return [int(x + w // 2), int(y + h // 2), int(w), None]
+
     def get_top_head_center(self, head):
-        x,y,w,h  = tuple(map(lambda x: int(x//resize_scale), head))
-        return [int(x+w//2), int(y), int(w), None]
+        x, y, w, h = tuple(map(lambda x: int(x // resize_scale), head))
+        return [int(x + w // 2), int(y), int(w), None]
+
 
 def low_to_high_resize(x, y):
     return (int(x // resize_scale), int(y // resize_scale))
+
 
 def draw_rectange_on_face(img, face):
     ((x, y), (width, height)) = low_to_high_resize(face[0], face[1]), low_to_high_resize(face[2], face[3])
@@ -150,7 +156,7 @@ def draw_rectange_on_face(img, face):
 def draw_rectange_on_eye(img, eye):
     ((x, y), (width, height)) = low_to_high_resize(eye[0], eye[1]), low_to_high_resize(eye[2], eye[3])
     img = cv2.rectangle(img, (x, y), (x + width, y + height), green, 5)
-    cv2.putText(img, 'oko', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1,green, thickness=2)
+    cv2.putText(img, 'oko', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, green, thickness=2)
     return img
 
 
@@ -173,5 +179,3 @@ def draw_rectange_on_nose(img, nose):
     img = cv2.rectangle(img, (x, y), (x + width, y + height), orange, 3)
     cv2.putText(img, 'nos', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, orange, thickness=2)
     return img
-
-
