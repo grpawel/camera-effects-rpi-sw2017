@@ -11,7 +11,9 @@ from finger.fingers.finger_processor import finger_processor
 from object_tracking.tracker import ObjectTracker
 
 gpio_pin = 15
+time.sleep(2)
 vs = cv2.VideoCapture(0)
+time.sleep(1)
 fd = FaceDetector(True, True, False, False, False)
 fa = FaceFilters()
 ob = ObjectTracker()
@@ -52,11 +54,17 @@ def change_param(_):
 
 GPIO.add_event_detect(gpio_pin, GPIO.FALLING, callback=change_func)
 GPIO.add_event_detect(18, GPIO.FALLING, callback=change_param)
-while True:
+fails = 0
+while fails < 3:
     _, frame = vs.read()
-    name, im = fun[0](frame)
-    cv2.imshow(name, im)
-    key = cv2.waitKey(1) & 0xFF
-    if fun_changed:
-        cv2.destroyAllWindows()
-        fun_changed = False
+    if frame is None:
+        print('Can not retrieve image from camera. Check whether it is not detached or busy.')
+        fails += 1
+        time.sleep(1)
+    else:
+        name, im = fun[0](frame)
+        cv2.imshow(name, im)
+        key = cv2.waitKey(1) & 0xFF
+        if fun_changed:
+            cv2.destroyAllWindows()
+            fun_changed = False
