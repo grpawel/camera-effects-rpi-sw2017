@@ -1,6 +1,7 @@
+#!/bin/bash
 echo Initializing system
 echo .
-source ~/.profile
+source /home/pi/.profile
 echo .
 workon cv
 echo .
