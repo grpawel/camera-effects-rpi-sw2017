@@ -1,11 +1,11 @@
 import cv2
 
 # parts of face definistions
-face_cascade = cv2.CascadeClassifier('./res/haarcascades/haarcascade_frontalface_default.xml')
-eyes_cascade = cv2.CascadeClassifier('./res/haarcascades/haarcascade_eye.xml')
-smile_cascade = cv2.CascadeClassifier('./res/haarcascades/haarcascade_smile.xml')
-mouth_cascade = cv2.CascadeClassifier('./res/haarcascades/Mouth.xml')
-nose_cascade = cv2.CascadeClassifier('./res/haarcascades/haarcascade_mcs_nose.xml')
+face_cascade = cv2.CascadeClassifier('/home/pi/projects/sw/camera-effects-rpi-sw2017/engine/res/haarcascades/haarcascade_frontalface_default.xml')
+eyes_cascade = cv2.CascadeClassifier('/home/pi/projects/sw/camera-effects-rpi-sw2017/engine/res/haarcascades/haarcascade_eye.xml')
+smile_cascade = cv2.CascadeClassifier('/home/pi/projects/sw/camera-effects-rpi-sw2017/engine/res/haarcascades/haarcascade_smile.xml')
+mouth_cascade = cv2.CascadeClassifier('/home/pi/projects/sw/camera-effects-rpi-sw2017/engine/res/haarcascades/Mouth.xml')
+nose_cascade = cv2.CascadeClassifier('/home/pi/projects/sw/camera-effects-rpi-sw2017/engine/res/haarcascades/haarcascade_mcs_nose.xml')
 resize_scale = 0.5
 
 blue = (255, 0, 0)

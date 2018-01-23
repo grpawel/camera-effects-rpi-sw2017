@@ -15,8 +15,8 @@ class FaceFilters:
         self.nose_live = 1
         self.head_Live = 1
         self.head_top_centres = []
-        self.moustache = cv2.imread('./res/moustache.png', -1)
-        self.hat = cv2.imread('./res/christmas_hat.png', -1)
+        self.moustache = cv2.imread('/home/pi/projects/sw/camera-effects-rpi-sw2017/engine/res/moustache.png', -1)
+        self.hat = cv2.imread('/home/pi/projects/sw/camera-effects-rpi-sw2017/engine/res/christmas_hat.png', -1)
 
     def draw_moustache(self, img):
         if self.nose_live < 0:
