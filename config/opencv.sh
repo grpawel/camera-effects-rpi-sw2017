@@ -53,4 +53,9 @@ echo @lxterminal --command $RPI_CAMERA_EFFECTS/camera-effects-rpi-sw2017/engine/
 echo sudo reboot > /home/pi/Desktop/power-off.sh
 chmod u+x /home/pi/Desktop/power-off.sh
 
+
+sudo xset s off
+sudo xset -dpms
+sudo xset s noblank
+
 sudo reboot
