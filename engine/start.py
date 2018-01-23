@@ -32,28 +32,35 @@ funs = [(edge_processor, None), (fd.procces_img, fd.next), (fa.draw_moustache, N
 f = len(funs)
 i = 0
 fun = funs[0]
-last_change = time.time()
+last_change_a = time.time()
 fun_changed = False
 
 
 def change_func(_):
     global i
-    global last_change
+    global last_change_a
     global fun
     global funs
     global fun_changed
     current_time = time.time()
-    if current_time - last_change >= BUTTON_DEBOUNCE:
+    if current_time - last_change_a >= BUTTON_DEBOUNCE:
         i += 1
         fun = funs[i % f]
-        last_change = current_time
+        last_change_a = current_time
         fun_changed = True
+
+last_change_b = time.time()
 
 
 def change_param(_):
     global fun
+    global last_change_b
     if fun[1] is not None:
-        fun[1]()
+        current_time = time.time()
+        if current_time - last_change_b >= BUTTON_DEBOUNCE:
+            fun[1]()
+            last_change_b = current_time
+
 
 
 def setup_buttons():
