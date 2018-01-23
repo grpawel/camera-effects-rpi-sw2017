@@ -10,22 +10,25 @@ from face_filters.face_detector import FaceDetector
 from finger.fingers.finger_processor import finger_processor
 from object_tracking.tracker import ObjectTracker
 
-gpio_pin = 15
-time.sleep(2)
-vs = cv2.VideoCapture(0)
-time.sleep(1)
+# Buttons GPIO pins
+# Button A - for selecting effect
+BUTTON_A_GPIO_PIN = 15
+# Button B - for selecting parameters
+BUTTON_B_GPIO_PIN = 18
+
+# Button debounce
+BUTTON_DEBOUNCE = 0.5
+
 fd = FaceDetector(True, True, False, False, False)
 fa = FaceFilters()
 ob = ObjectTracker()
 inv = Inverter()
 nr = NoiseRemover()
-# list of image processing function, and change param func
+
+# List of image processing function, and change param func
 funs = [(edge_processor, None), (fd.procces_img, fd.next), (fa.draw_moustache, None), (fa.draw_hat, None),
         (ob.process, ob.next), (finger_processor, None), (inv.invert, None), (nr.remove_noise, nr.next)]
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 f = len(funs)
 i = 0
 fun = funs[0]
@@ -40,7 +43,7 @@ def change_func(_):
     global funs
     global fun_changed
     current_time = time.time()
-    if current_time - last_change >= 0.5:
+    if current_time - last_change >= BUTTON_DEBOUNCE:
         i += 1
         fun = funs[i % f]
         last_change = current_time
@@ -48,17 +51,30 @@ def change_func(_):
 
 
 def change_param(_):
+    global fun
     if fun[1] is not None:
         fun[1]()
 
 
-GPIO.add_event_detect(gpio_pin, GPIO.FALLING, callback=change_func)
-GPIO.add_event_detect(18, GPIO.FALLING, callback=change_param)
+def setup_buttons():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(BUTTON_A_GPIO_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(BUTTON_B_GPIO_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.add_event_detect(BUTTON_A_GPIO_PIN, GPIO.FALLING, callback=change_func)
+    GPIO.add_event_detect(BUTTON_B_GPIO_PIN, GPIO.FALLING, callback=change_param)
+
+setup_buttons()
+
+time.sleep(2)
+vs = cv2.VideoCapture(0)
+time.sleep(1)
+
 fails = 0
 while fails < 3:
     _, frame = vs.read()
     if frame is None:
         print('Can not retrieve image from camera. Check whether it is not detached or busy.')
+        print('Next try in 1 second.')
         fails += 1
         time.sleep(1)
     else:
